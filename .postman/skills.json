@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "origin": "remote",
+  "source": "https://raw.githubusercontent.com/postmanlabs/skills/main/",
+  "fetchedAt": "2026-09-22T22:45:01.246Z",
+  "etag": "W/\"0c2cb1ab76b17d5bccea3820b1a5e60cd7360ed41173872a9268457f11cdaf34\"",
+  "skills": {
+    "ai-readiness": {
+      "files": {
+        "SKILL.md": {
+          "source": "b6a398918babc3dbfe35c1107c25d8de80644c599566ce2da40123c54560b1f3",
+          "written": "b6a398918babc3dbfe35c1107c25d8de80644c599566ce2da40123c54560b1f3"
+        }
+      }
+    },
+    "api-discovery": {
+      "files": {
+        "SKILL.md": {
+          "source": "cceca5cf3b1feab3e664ef50d3d42a0b7c5305f8e1cd744ca21b86ab27883fd9",
+          "written": "cceca5cf3b1feab3e664ef50d3d42a0b7c5305f8e1cd744ca21b86ab27883fd9"
+        },
+        "reference/search_filters.md": {
+          "source": "e7a1e69fa1d9b34e9518ddd093278d9f9f87fc28e4f81f50f64dad90766afbac",
+          "written": "e7a1e69fa1d9b34e9518ddd093278d9f9f87fc28e4f81f50f64dad90766afbac"
+        }
+      }
+    },
+    "api-mocking": {
+      "files": {
+        "SKILL.md": {
+          "source": "b0d190feead0f1aa93e89301613ceaea3d3948b8211cc73398a06f653128fd67",
+          "written": "b0d190feead0f1aa93e89301613ceaea3d3948b8211cc73398a06f653128fd67"
+        }
+      }
+    },
+    "api-monitoring": {
+      "files": {
+        "SKILL.md": {
+          "source": "c1f4b6f1194fbedfeb0a8d8d443ccc5b80e8cd4f641b95f5d3867af6bc7c3033",
+          "written": "c1f4b6f1194fbedfeb0a8d8d443ccc5b80e8cd4f641b95f5d3867af6bc7c3033"
+        }
+      }
+    },
+    "api-testing": {
+      "files": {
+        "SKILL.md": {
+          "source": "7419daa5c0f8fea327c11f4ba790f4d3bb77bc80311f33283a7407b9c2311e36",
+          "written": "7419daa5c0f8fea327c11f4ba790f4d3bb77bc80311f33283a7407b9c2311e36"
+        }
+      }
+    },
+    "bootstrap": {
+      "files": {
+        "SKILL.md": {
+          "source": "97c166077ffc1f606d817610b4bd3574bf594f2f73c37330a6e0e077c2c4dc3c",
+          "written": "97c166077ffc1f606d817610b4bd3574bf594f2f73c37330a6e0e077c2c4dc3c"
+        },
+        "reference/cli_installation.md": {
+          "source": "47a386fa43c5bfe3fc5999bc2d7eec77c1e79077994f6b6748cef0ff11a00161",
+          "written": "47a386fa43c5bfe3fc5999bc2d7eec77c1e79077994f6b6748cef0ff11a00161"
+        }
+      }
+    },
+    "ci-integration": {
+      "files": {
+        "SKILL.md": {
+          "source": "5133310bc4a81b49192987cc6568fbfc46f7b12fe8fa50fc42a5ee26bb21d4c0",
+          "written": "5133310bc4a81b49192987cc6568fbfc46f7b12fe8fa50fc42a5ee26bb21d4c0"
+        }
+      }
+    },
+    "collection-schema-v3": {
+      "files": {
+        "SKILL.md": {
+          "source": "5e0f4b4b8a789f187aa3ee1cf1e284b32dfabeedd09b8677b486170e359b7006",
+          "written": "5e0f4b4b8a789f187aa3ee1cf1e284b32dfabeedd09b8677b486170e359b7006"
+        },
+        "reference/other_protocols.md": {
+          "source": "c27c63240d8608016c1c54a9200e63ca6bac9d77acc71712c9697189e2f62d6a",
+          "written": "c27c63240d8608016c1c54a9200e63ca6bac9d77acc71712c9697189e2f62d6a"
+        }
+      }
+    },
+    "performance-testing": {
+      "files": {
+        "SKILL.md": {
+          "source": "41da742e5cf847c86353518a666122e6bbced2d756ade1f09023004fda54215c",
+          "written": "41da742e5cf847c86353518a666122e6bbced2d756ade1f09023004fda54215c"
+        }
+      }
+    }
+  }
+}

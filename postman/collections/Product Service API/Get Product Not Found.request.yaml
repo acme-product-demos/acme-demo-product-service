@@ -1,0 +1,20 @@
+$kind: http-request
+method: GET
+url: '{{baseUrl}}/api/products/does-not-exist'
+order: 5000
+headers:
+  - key: Accept
+    value: application/json
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test('status is 404', function () {
+        pm.response.to.have.status(404);
+      });
+
+      pm.test('body reports the not-found error message', function () {
+        var body = pm.response.json();
+        pm.expect(body.error).to.eql('Product not found');
+      });
+examples: './.resources/Get Product Not Found.resources/examples/'

@@ -1,0 +1,42 @@
+$kind: http-request
+method: GET
+url: '{{baseUrl}}/api/products'
+order: 2000
+headers:
+  - key: Accept
+    value: application/json
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test('status is 200', function () {
+        pm.response.to.have.status(200);
+      });
+
+      pm.test('returns an array of 10 products', function () {
+        var body = pm.response.json();
+        pm.expect(body).to.be.an('array');
+        pm.expect(body).to.have.lengthOf(10);
+      });
+
+      pm.test('every product has all 7 fields with the right types', function () {
+        var body = pm.response.json();
+        body.forEach(function (product) {
+          pm.expect(product).to.have.all.keys(
+            'id', 'name', 'description', 'price', 'category', 'image', 'stock'
+          );
+          pm.expect(product.id).to.be.a('string');
+          pm.expect(product.name).to.be.a('string');
+          pm.expect(product.description).to.be.a('string');
+          pm.expect(product.price).to.be.a('number');
+          pm.expect(product.category).to.be.a('string');
+          pm.expect(product.image).to.be.a('string');
+          pm.expect(product.stock).to.be.a('number');
+          pm.expect(Number.isInteger(product.stock)).to.be.true;
+        });
+      });
+
+      // Chain real data into later requests in this collection.
+      var products = pm.response.json();
+      pm.collectionVariables.set('sampleProductId', products[0].id);
+      pm.collectionVariables.set('sampleCategory', products[0].category);

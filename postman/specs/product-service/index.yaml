@@ -1,0 +1,152 @@
+openapi: 3.0.3
+info:
+  title: Product Service API
+  version: 0.1.0
+  description: >-
+    Read-only catalog service for products. Backed by in-memory data with 10
+    seeded products (ids p1..p10).
+servers:
+  - url: http://localhost:4001
+    description: Local development server
+tags:
+  - name: Health
+    description: Service health checks
+  - name: Products
+    description: Product catalog operations
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Health check
+      description: Returns the service's health status.
+      operationId: getHealth
+      responses:
+        '200':
+          description: Service is healthy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthStatus'
+              example:
+                status: ok
+                service: product-service
+  /api/products:
+    get:
+      tags:
+        - Products
+      summary: List products
+      description: >-
+        Returns all products, optionally filtered by category
+        (case-insensitive exact match).
+      operationId: listProducts
+      parameters:
+        - name: category
+          in: query
+          required: false
+          description: Filter products by category, case-insensitive exact match.
+          schema:
+            type: string
+          example: electronics
+      responses:
+        '200':
+          description: Array of products matching the optional category filter.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+  /api/products/{id}:
+    get:
+      tags:
+        - Products
+      summary: Get product by id
+      description: Returns a single product by its id.
+      operationId: getProductById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Product identifier, e.g. p1.
+          schema:
+            type: string
+          example: p1
+      responses:
+        '200':
+          description: The requested product.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: No product exists with the given id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+              example:
+                error: Product not found
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      required:
+        - status
+        - service
+      properties:
+        status:
+          type: string
+          example: ok
+        service:
+          type: string
+          example: product-service
+    Product:
+      type: object
+      required:
+        - id
+        - name
+        - description
+        - price
+        - category
+        - image
+        - stock
+      properties:
+        id:
+          type: string
+          description: Unique product identifier.
+          example: p1
+        name:
+          type: string
+          description: Product display name.
+          example: Wireless Noise-Cancelling Headphones
+        description:
+          type: string
+          description: Longer descriptive text for the product.
+          example: >-
+            Over-ear Bluetooth headphones with active noise cancellation and
+            30-hour battery life.
+        price:
+          type: number
+          description: Price in USD.
+          example: 149.99
+        category:
+          type: string
+          description: Product category.
+          example: electronics
+        image:
+          type: string
+          description: Emoji or image reference representing the product.
+          example: 🎧
+        stock:
+          type: integer
+          description: Units currently in stock.
+          example: 42
+    NotFoundError:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          example: Product not found

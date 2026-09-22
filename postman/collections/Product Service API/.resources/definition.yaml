@@ -1,0 +1,17 @@
+$kind: collection
+name: Product Service API
+description: >-
+  Collection of requests exercising the product-service catalog API: health
+  check, listing products (with an optional category filter), fetching a
+  single product by id, and the 404 path for an unknown id. `List Products`
+  seeds `sampleProductId` and `sampleCategory` collection variables from the
+  live data so the requests that follow can chain off real values.
+variables:
+  - key: sampleProductId
+    value: ''
+    description: Set by "List Products" from the first product returned.
+    disabled: false
+  - key: sampleCategory
+    value: ''
+    description: Set by "List Products" from the first product's category.
+    disabled: false

@@ -1,0 +1,27 @@
+$kind: http-request
+method: GET
+url: '{{baseUrl}}/api/products?category={{sampleCategory}}'
+order: 3000
+headers:
+  - key: Accept
+    value: application/json
+queryParams:
+  - key: category
+    value: '{{sampleCategory}}'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test('status is 200', function () {
+        pm.response.to.have.status(200);
+      });
+
+      pm.test('every returned product matches the requested category (case-insensitive)', function () {
+        var expectedCategory = pm.collectionVariables.get('sampleCategory').toLowerCase();
+        var body = pm.response.json();
+        pm.expect(body).to.be.an('array');
+        pm.expect(body.length).to.be.above(0);
+        body.forEach(function (product) {
+          pm.expect(product.category.toLowerCase()).to.eql(expectedCategory);
+        });
+      });

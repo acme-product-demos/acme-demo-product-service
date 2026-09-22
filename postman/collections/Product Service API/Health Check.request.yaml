@@ -1,0 +1,27 @@
+$kind: http-request
+method: GET
+url: '{{baseUrl}}/health'
+order: 1000
+headers:
+  - key: Accept
+    value: application/json
+scripts:
+  - type: beforeRequest
+    language: text/javascript
+    code: |-
+      // Stash a start timestamp so response time could be derived downstream
+      // if this collection grows more requests that care about it.
+      pm.collectionVariables.set('healthCheckStartedAt', Date.now());
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test('status is 200', function () {
+        pm.response.to.have.status(200);
+      });
+
+      pm.test('body reports ok status and correct service name', function () {
+        var body = pm.response.json();
+        pm.expect(body.status).to.eql('ok');
+        pm.expect(body.service).to.eql('product-service');
+      });
+examples: './.resources/Health Check.resources/examples/'
