@@ -24,6 +24,16 @@ const server = http.createServer((req, res) => {
   const url = new URL(req.url || '', 'http://localhost');
   const pathname = url.pathname;
 
+  // Allow a browser (e.g. the web-app frontend) to call this mock cross-origin —
+  // Postman's deployed mock servers don't add these by default.
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,x-user-id,x-mock-response-code,x-mock-scenario,x-api-key');
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204);
+    return res.end();
+  }
+
   // @endpoint GET /health
   if (req.method === 'GET' && pathname === '/health') {
     res.writeHead(200, {"Content-Type":"application/json"});
