@@ -3,6 +3,7 @@ cloudResources:
     ../postman/collections/Product Service API: 49130935-a61a2677-f30f-443d-8af2-9fff81ff91b3
   environments:
     ../postman/environments/product-service-local.environment.yaml: 49130935-0e1d4280-5fa5-4578-9e8b-6475e15ccf72
+    ../postman/environments/product-service-mock.environment.yaml: 49130935-53cd6482-ad35-4408-b2f3-bbc0a39a51e8
   mocks:
     ../postman/mocks/product-service-mock/config.yaml: 6a669743-f122-4a27-a212-87fb5b7267e2
   specs:
