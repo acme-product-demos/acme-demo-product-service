@@ -1,0 +1,10 @@
+version: 1
+id: 6a669743-f122-4a27-a212-87fb5b7267e2
+name: Product Service Mock
+slug: product-service-mock
+protocol: http
+port: 5001
+scenarios:
+  - name: default
+    path: ./default.js
+    default: true
