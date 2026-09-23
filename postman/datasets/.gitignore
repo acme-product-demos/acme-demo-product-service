@@ -1,0 +1,9 @@
+# Local runtime state written by the `postman dataset` engine (SQLite
+# caches, daemon logs, per-dataset connection dirs). Not git-native data —
+# only the .dataset.yaml files and the source files they reference
+# (e.g. .resources/*.csv) belong in version control.
+**/.resources/data.db
+**/.resources/meta.db
+**/.resources/daemon.log
+**/.resources/config/
+**/.resources/*-*-*-*-*/

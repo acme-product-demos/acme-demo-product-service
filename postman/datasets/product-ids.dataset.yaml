@@ -1,0 +1,21 @@
+type: dataset
+name: "Product IDs"
+id: 5090442d-dabf-423d-96b8-a48db3791652
+description: "All product-service catalog ids and categories, for dataset-driven collection runs"
+data_dir: .resources
+sources:
+  - from: embedded_datasource
+    datasource:
+      name: products
+      id: d6b2bb93-f4ec-4847-98a8-ebb12e9e775b
+      format: csv
+      source_type: static
+      location:
+        type: local_filesystem
+        value: .resources/product-ids.csv
+views:
+  - from: embedded_view
+    view:
+      name: all-products
+      id: afacde78-86f6-44d1-8070-5fd80393d811
+      query: SELECT id AS sampleProductId, category FROM products
