@@ -1,0 +1,10 @@
+version: 1
+name: Product Service Mock (Beta)
+slug: product-service-mock-beta
+protocol: http
+port: 5011
+scenarios:
+  - name: default
+    path: ./default.js
+    default: true
+    id: 01a11a95-e370-771f-b778-0e74ec6a00bd

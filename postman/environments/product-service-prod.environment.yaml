@@ -1,0 +1,6 @@
+name: Product Service Prod
+values:
+  - key: baseUrl
+    value: 'https://product-service-mock-prod.mock.product-demos.postman.dev'
+    enabled: true
+    type: default

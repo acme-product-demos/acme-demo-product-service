@@ -2,9 +2,13 @@ cloudResources:
   collections:
     ../postman/collections/Product Service API: 49130935-a61a2677-f30f-443d-8af2-9fff81ff91b3
   environments:
+    ../postman/environments/product-service-beta.environment.yaml: 49130935-e8029f10-10cb-4195-9dc2-2d5a1ce99718
     ../postman/environments/product-service-local.environment.yaml: 49130935-0e1d4280-5fa5-4578-9e8b-6475e15ccf72
     ../postman/environments/product-service-mock.environment.yaml: 49130935-53cd6482-ad35-4408-b2f3-bbc0a39a51e8
+    ../postman/environments/product-service-prod.environment.yaml: 49130935-50964a7c-6dac-490e-bf05-993fa87e45c7
   mocks:
+    ../postman/mocks/product-service-mock-beta/config.yaml: 7789546c-3fe6-4f9e-81ce-cb5ec72e5d9b
+    ../postman/mocks/product-service-mock-prod/config.yaml: 2d285aa5-e3bb-4e2e-bcca-abd5828dbda5
     ../postman/mocks/product-service-mock/config.yaml: 6a669743-f122-4a27-a212-87fb5b7267e2
   specs:
     ../postman/specs/product-service/index.yaml: 83816610-c4a0-47cf-b1d3-2a900b96bce7

@@ -1,0 +1,10 @@
+version: 1
+name: Product Service Mock (Prod)
+slug: product-service-mock-prod
+protocol: http
+port: 5021
+scenarios:
+  - name: default
+    path: ./default.js
+    default: true
+    id: 01a11a95-fbe9-75d8-9054-a9dabbf6b178
