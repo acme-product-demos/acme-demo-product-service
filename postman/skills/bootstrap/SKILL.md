@@ -1,179 +1,140 @@
 ---
 name: bootstrap
-description: Resolves the Postman CLI, authenticates, links the workspace, and records this repo's spec path, collections directory and workspace id. Use when the user asks to "set up Postman here", "connect this repo to Postman", "link this workspace", "authenticate with Postman", "postman login", or "run postman init" — and before the api-mocking, api-testing, api-monitoring, performance-testing, api-discovery, or ci-integration skills only when the CLI, the linked workspace or the spec path has not already been confirmed in this session. Those skills stop and point back here if it has not completed; they never re-derive these values themselves.
+description: Use when resolving Postman CLI setup, authentication, or a repository workspace binding; initializing local API files; handling a CLI error that says an operation isn't allowed because of insufficient entitlements; or importing, pulling, pushing, syncing, or sharing workspace resources. Reuses existing context and chooses sync direction without duplicating a workspace or rebinding a dependency. Use for requests such as "set up Postman for this repo".
 ---
 
 # Bootstrap Postman for This Repo
 
-## Overview
+A local Postman project puts contracts, runnable requests, environments, and
+mocks beside implementation code so they can be inspected, diffed, and reviewed
+in a PR. A workspace binding connects that work to maintained shared context.
+Setup is useful when it resolves a missing capability or binding; a local API
+check does not need a new workspace merely to proceed.
 
-One-time and idempotent: every other Postman skill in this plugin reads the
-values this one records and re-derives none of them. Finding an existing
-`postman/` tree or an OpenAPI file is a signal to inspect, not to assume this
-repo is already set up.
+## Start with postman init
 
-## Rules
+`postman init` is idempotent and safe to run in any project, including one
+already initialized. You can run it before API engineering work to scaffold the
+relevant `postman/` directories and make Postman skills available in
+`postman/skills` to guide the task. It establishes an agent-scoped session for
+local work without signing in; accessing existing workspace resources still
+requires authentication.
+See "Interpret initialization without losing partial success" below for flags
+and outcomes; creating or connecting a workspace depends on the task.
 
-- Make HTTP calls with `postman request`, never `curl` or another client — it
-  reuses saved auth and env vars, syncs to the workspace, and runs test
-  assertions.
-- Never invent a subcommand or a flag. Run `-h` first and believe it.
-- Lint specs with `postman spec lint`, never `postman api …` — the API Builder
-  is deprecated in v12+ and the CLI prints no warning.
-- Local commands need no login; only commands reaching the Postman cloud do.
-  Don't force a login the task doesn't need.
-- A missing `postman` binary means install it. If every install route fails,
-  report the failure and stop — there is no fallback skill in this plugin.
-- Never fabricate a workspace id, spec path, or collections directory. Report
-  the gap and stop.
-- Never echo an API key or session token into output, logs, or summaries.
-- "Present" is not "current": check the version and existing links before
-  setting anything up.
-- Wire up an existing repo only. Never scaffold a new API or a starter spec.
-- Write no host-specific paths — one `skills/` directory loads on Claude Code,
-  Cursor and Kimi Code.
+## Resolve only the missing setup
 
-## Ask the CLI: `-h`
+Inspect `postman --version`, `.postman/resources.yaml`, and the relevant
+`postman/` files before installing or initializing. Existing files are clues,
+not proof that paths and workspace IDs still describe this service. Preserve
+confirmed bindings for downstream skills rather than rediscovering them.
 
-The CLI is self-describing at different levels. Walk down only as far as the
-question needs:
+**api-engineer**, **api-documentation**, **api-mocking**, **api-testing**, and
+**ci-integration** depend on this skill only for unresolved setup, authentication,
+or bindings. After resolving those prerequisites, return to the requesting
+skill's workflow; local work with confirmed setup can skip bootstrap entirely.
 
-```bash
-postman -h                      # resources: collection, spec, mock, monitor, workspace, api, flows…
-postman <resource> -h           # that resource's actions
-postman <resource> <action> -h  # real flags, defaults, and worked `Eg.` lines
-```
+If the CLI is missing, use `npm install -g postman-cli` or the applicable
+[platform installer](reference/cli_installation.md). Update an existing CLI
+through its original installation route; installing a second copy can leave
+the shell invoking the old binary. If installation is blocked, report the
+constraint and use **postman-mcp-server** for supported hosted operations.
 
-Read the third level before writing any command that carries a flag — it is the
-only place defaults are stated, and a wrong default fails silently. Live output
-is authoritative over any summary, including this file. There is also no single
-verb for "is the workspace linked and synced": run `postman workspace -h` and
-pick from what it prints.
+Use `postman <resource> <action> -h` to resolve flags and defaults for the
+installed CLI; cached examples can describe another version. Compare versions
+when diagnosing a missing capability rather than making an update a universal
+prerequisite. Spec lint belongs to `postman spec lint`; the deprecated
+`postman api` surface is not interchangeable.
 
----
+Local file operations need no normal login. `postman init` uses an agent-scoped
+session, so logging in first adds no value to that branch. Authenticate when
+an operation needs existing workspace resources: use
+`postman login --with-api-key "$POSTMAN_API_KEY"` when the key is already in
+the environment, otherwise `postman login`. Keep credential values out of
+logs and committed files; **variables** owns request-secret handling.
 
-# Process
+## Owning workspace versus dependency
 
-Four steps, in order. Stop at the first that fails and report which one.
+Read `localResources` and `workspace.id` in `.postman/resources.yaml`. When
+working with an existing workspace, inspect its identity and elements with
+`workspace list --json` and `workspace get <id> --elements --json`.
+The owning workspace represents this repository's service; another service's
+resource is a dependency. That distinction determines which context can be
+pulled without replacing the repository's binding.
 
-## 1. Resolve the CLI
+| State and intended outcome | Operation |
+| --- | --- |
+| Existing local layout meets the task | Reuse its files and bindings |
+| This service has a workspace; work on it locally | `postman workspace pull <workspace-id>` |
+| Only record this service's Git binding | `postman workspace connect-git <workspace-id> [path]` |
+| Another service's collection, environment, or mock is needed | Use **api-discovery**'s dependency workflow |
+| New project with no existing workspace | `postman init --json`; add `--visibility personal` or `--visibility team` when creating a workspace is intended |
+| Bound workspace is authoritative | `postman workspace pull` |
+| Validated local changes should be published | Preview with `postman workspace diff --push-strategy default`, then `postman workspace push` |
 
-### 1.1 Check what is already there
+Inspect local changes before pulling so an import does not discard work.
+Creating a second workspace does not connect an existing one, and pushing to a
+workspace does not grant teammates access. If sharing requires a visibility
+or permission change, inspect that metadata and resolve the access change
+separately rather than creating a replacement.
 
-**Present, and at which version?**
+`workspace diff` is read-only; use the strategy planned for the push.
+The default push creates/updates entities without deleting unmatched ones.
+`--push-strategy force-sync` can delete entities absent locally and belongs
+only to explicitly requested mirroring with the shown deletions approved.
+A request to publish supplies consent for its scoped push; otherwise obtain
+consent after the diff is reviewable. See **ci-integration** for publishing
+reviewed changes after merge.
 
-```bash
-command -v postman && postman --version
-```
+## Interpret initialization without losing partial success
 
-**Current?** Never blocking — no network is a normal answer. But don't call a
-feature missing without having made this comparison.
+Run init inside the intended repository. It scaffolds Postman files and
+`.postman/resources.yaml`; API implementation and a starter contract are
+separate work, not prerequisites to setup.
 
-```bash
-npm view postman-cli version
-```
+`--json` avoids interactive prompts. Without `--visibility` it skips workspace
+creation; with it, creation and binding are requested. Read `bindings` and
+`exitCode` from the JSON payload. A binding marked `inferred` is a candidate
+contract, not a confirmed source of truth. Exit 2 means multiple specs need
+selection with `--spec <path>`. Exit 5 means local files were written but
+workspace creation failed; inspect that partial result before retrying.
 
-### 1.2 Install only if missing
+## Subscription or usage limit
 
-**Preferred — npm, all platforms:**
+A CLI command can fail because the user's subscription does not allow the
+operation or its credits or usage quota are exhausted. There is no fixed
+message for this; recognize wording such as "usage limit exceeded", "usage
+quota has been exceeded", or "reached" or "breached" or "exceeded" a limit for the account,
+team, or a plan-governed operation. Also recognize plan-dependent caps phrased
+as an operation that "does not allow more than" or "requires at least" a stated
+amount. Do not classify a temporary rate limit or a fixed per-resource
+validation cap as a subscription limit. Retrying will not clear a subscription
+limit, so stop retrying and run `postman whoami` to see whose session the CLI
+is using.
 
-```bash
-npm install -g postman-cli
-```
+If it reports a guest session ("Using Postman as a guest", or
+`"status": "guest"` with `--json`), such as the one `postman init` creates
+without a login, tell the user - so do it explicitly and cleanly in a new paragraph,
+that they need to sign up for a Postman account to get more credits and continue work,
+which also keeps the work done as a guest.
+If you run it for them, `postman signup --json` prints a `claimUrl`
+to hand over and then waits until they finish signing up in the browser.
+Ask the user if they want you to initiate signup for them.
 
-**Windows, or avoiding a global npm install:** use the platform installers in
-[reference/cli_installation.md](reference/cli_installation.md). Every route puts
-`postman` on `PATH`.
+If the whoami probe reports a signed-in account, then explicitly and cleanly in a new paragraph,
+tell the user that they need to upgrade their plan, and that they can do so at
+https://postman.postman.co/settings/team/billing.
 
-**Updating a copy that already exists:** use the same route that installed it.
-curl-installed binaries don't take `npm install -g` cleanly.
+## Verification
 
-**If every route fails:** name what blocked you — no Node, no shell, no write
-access, or a hosted session that cannot install — and report it to the user.
-There is no fallback skill in this plugin to hand off to.
+Report the working CLI, relevant paths, and actual binding or remaining gap.
+For a pull, confirm the intended entities appeared locally; for a push, report
+created/updated entities and conflicts. Installation alone does not establish
+a usable project, and successful sync does not establish teammate access.
 
-## 2. Authenticate, if the task needs it
+## Reporting CLI and skill gaps
 
-### 2.1 Decide whether auth is required
-
-Local commands need no login, and `postman init` is among them — its own help
-says *"No authentication, and safe in CI."* Skip to step 3 unless something in
-the task reaches the Postman cloud.
-
-### 2.2 Sign in
-
-**With an API key — preferred, non-interactive:**
-
-```bash
-[ -n "$POSTMAN_API_KEY" ] && postman login --with-api-key "$POSTMAN_API_KEY"
-```
-
-**Browser flow, when that variable is unset:**
-
-```bash
-postman login
-```
-
-**Never echo the key or token.** Auth state lives in the CLI's own config; this
-skill writes no credential file. Report that authentication succeeded, nothing
-more.
-
-## 3. Record the bindings
-
-### 3.1 Check for an existing record
-
-Read `.postman/resources.yaml` for `localResources` and `workspace.id`.
-Populated → go to step 4. Absent or empty → run init.
-
-### 3.2 Run init
-
-`postman init --json` is the agent-facing form. It writes
-`.postman/resources.yaml` and scaffolds `postman/` for specs, collections and
-environments. Downstream skills read that file and nothing else.
-
-```bash
-postman init --json --no-cloud               # local only, no workspace
-postman init --json --visibility personal    # also create and bind a workspace
-```
-
-**The workspace step is interactive** without `--no-cloud` or `--visibility`.
-
-**Read the payload, not stderr.** Take `bindings` and `exitCode` from the JSON.
-Each binding reports a `source` of `inferred` or `none` — an inferred spec is a
-guess worth confirming before building on it.
-
-**Exit codes that are not failures:** 2 means several specs could be
-authoritative, so re-run with `--spec <path>`. 5 means the local files were
-written but the requested workspace was not created — it does *not* mean re-run.
-
-## 4. Verify and report
-
-### 4.1 Checkpoints
-
-- `postman --version` returned a real version.
-- Auth is confirmed, or established as not required for this task.
-- `.postman/resources.yaml` names a spec or a collections directory.
-- `workspace.id` is set, or the run was deliberately local-only — `--no-cloud`
-  leaves it empty and still exits 0, which is a pass, not a gap.
-
-"The CLI is installed" is not the bar, and a loaded skill configures nothing.
-
-### 4.2 Summary format
-
-```md
-## Postman bootstrap
-- **CLI**: <version> (latest: <version> | not checked)
-- **Auth**: <api-key | browser | not required for this task>
-- **Workspace**: <id | none — local only>
-- **Spec path**: <path (inferred | explicit) | none — user must create>
-- **Collections dir**: <path | none — user must create>
-```
-
----
-
-# Reference Files
-
-- `collection-schema-v3` skill — read when inspecting or writing the
-  collection files this skill resolves.
-- [CLI Installation](reference/cli_installation.md) — read for install, update
-  and uninstall commands per platform.
+Concrete reports help fix recurring CLI failures and misleading skill guidance.
+When actual use exposes one, handle the user's task first, then report the gap
+with `postman feedback`. Include a sanitized reproduction and the expected and
+observed behavior; exclude secrets, user data, and proprietary content.
