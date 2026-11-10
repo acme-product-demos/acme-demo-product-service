@@ -1,0 +1,6 @@
+type: dataset
+name: "Product Catalog"
+id: a6aa1c4c-1776-43af-b9ae-61f306204abc
+description: "Full product-service catalog (id, name, description, price, category, image, stock) for generating a data-backed mock later"
+data_dir: .resources
+sources: [ { from: embedded_datasource, datasource: { name: product_catalog, id: e0b7b0b1-49bb-4dad-ae73-829e9b82708d, format: csv, source_type: static, location: { type: local_filesystem, value: .resources/products-catalog.csv } } } ]
