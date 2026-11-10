@@ -35,6 +35,11 @@ jobs:
         run: postman collection lint "postman/collections/Product Service API" -f error
       - name: Collection run (live contract test)
         run: postman collection run "postman/collections/Product Service API" -e postman/environments/product-service-local.environment.yaml
+      - name: Contract test against deployed mock (publisher-driven)
+        # Same collection, same contract -- run against the deployed mock
+        # instead of the real service, so a mock that's drifted from the
+        # spec/collection fails CI before it ships, not after.
+        run: postman collection run "postman/collections/Product Service API" -e postman/environments/product-service-mock.environment.yaml
       - name: AI readiness gate (spec)
         run: postman spec ai-readiness postman/specs/product-service/index.yaml --min-score 70
       - name: AI readiness gate (collection)
