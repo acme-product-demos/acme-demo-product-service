@@ -1,3 +1,6 @@
+
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
+
 cloudResources:
   collections:
     ../postman/collections/Product Service API: 49130935-a61a2677-f30f-443d-8af2-9fff81ff91b3
@@ -14,6 +17,6 @@ cloudResources:
     ../postman/specs/product-service/index.yaml: 83816610-c4a0-47cf-b1d3-2a900b96bce7
 resourceNameMappings:
   specs:
-    - ../postman/specs/product-service/index.yaml: index.yaml
+    - ../postman/specs/product-service/index.yaml: Product Service API
 workspace:
   id: e9e68b12-7eff-4352-9462-66eae8979bea
