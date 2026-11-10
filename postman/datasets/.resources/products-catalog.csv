@@ -1,11 +1,11 @@
 id,name,description,price,category,image,stock
-p1,"Wireless Noise-Cancelling Headphones","Over-ear Bluetooth headphones with active noise cancellation and 30-hour battery life.",149.99,electronics,🎧,42
-p2,"Smart Fitness Watch","Tracks heart rate, sleep, and workouts with a 7-day battery and always-on display.",199.00,electronics,⌚,30
-p3,"Ceramic Pour-Over Coffee Set","Hand-glazed ceramic dripper and carafe for a smooth, rich cup of coffee.",39.50,home,☕,65
-p4,"Memory Foam Throw Pillow","Plush 18-inch decorative pillow with a removable, machine-washable cover.",24.99,home,🛋️,120
-p5,"Men's Merino Wool Sweater","Lightweight, breathable crewneck sweater made from 100% merino wool.",79.00,apparel,🧥,55
-p6,"Women's Running Sneakers","Cushioned lightweight sneakers designed for daily runs and long walks.",89.99,apparel,👟,73
-p7,"The Midnight Orchard (Novel)","A bestselling mystery novel set in a small coastal town with a dark secret.",14.99,books,📖,200
-p8,"Learn Cooking: A Beginner's Guide","Step-by-step recipes and techniques for building confidence in the kitchen.",22.50,books,📚,88
-p9,"Stainless Steel Water Bottle","Insulated 24oz bottle that keeps drinks cold for 24 hours or hot for 12.",27.00,home,🍶,150
-p10,"Portable Bluetooth Speaker","Compact waterproof speaker with rich bass and 12-hour playtime.",59.99,electronics,🔊,47
+p1,"Mechanical Keyboard","Hot-swappable 75% keyboard with tactile brown switches and per-key RGB.",129.00,electronics,⌨️,38
+p2,"4K Webcam","Autofocus webcam with a wide-angle lens and a built-in privacy shutter.",89.99,electronics,📷,54
+p3,"French Press Coffee Maker","Double-wall stainless steel press that keeps coffee hot for an hour.",34.00,home,🫖,72
+p4,"Weighted Blanket","15lb glass-bead blanket with a breathable cotton cover for better sleep.",64.99,home,🛌,40
+p5,"Flannel Shirt","Brushed cotton flannel shirt, machine washable, available in three plaids.",45.00,apparel,🧣,95
+p6,"Trail Running Shoes","Grippy lugged outsole and a rock plate for technical off-road runs.",109.99,apparel,🥾,61
+p7,"The Last Horizon (Novel)","A sprawling first-contact sci-fi epic spanning three generations.",18.99,books,🚀,150
+p8,"Beginner's Guide to Gardening","Season-by-season planting guide for small yards and balconies.",19.50,books,🌱,110
+p9,"Insulated Lunch Box","Leakproof lunch box with a removable divider and a shoulder strap.",21.00,home,🥡,130
+p10,"Mini Bluetooth Projector","Pocket-sized 1080p projector with a 3-hour battery and built-in speaker.",179.00,electronics,📽️,25
