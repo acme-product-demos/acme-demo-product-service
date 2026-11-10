@@ -14,6 +14,6 @@ cloudResources:
     ../postman/specs/product-service/index.yaml: 83816610-c4a0-47cf-b1d3-2a900b96bce7
 resourceNameMappings:
   specs:
-    - ../postman/specs/product-service/index.yaml: index.yaml
+    - ../postman/specs/product-service/index.yaml: Product Service API
 workspace:
   id: e9e68b12-7eff-4352-9462-66eae8979bea
